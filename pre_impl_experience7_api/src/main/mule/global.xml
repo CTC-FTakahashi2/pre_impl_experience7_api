@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<global-property doc:name="Global Property" doc:id="f3fb8642-2e81-49f9-9fa0-16d82c65d7df" name="env" value="local" />
+	<configuration-properties doc:name="Configuration properties" doc:id="3fa1c839-cc31-4db1-8c8c-ecd0c4df4a97" file="properties/${env}-config.yaml" />
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="94d66816-c41d-4c4c-8512-fd16e5cc02a3" basePath="${http.path}" >
+		<http:listener-connection host="${http.host}" port="${http.theport}" />
+	</http:listener-config>
+	<http:request-config name="SApi_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="365013d8-1975-48bc-aa67-cc3d7cbaca9a" basePath="${dxapi.http.path}" >
+		<http:request-connection host="${dxapi.http.host}" port="${dxapi.http.port}" />
+	</http:request-config>
+	<http:request-config name="PApi_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="a051492c-022c-4c90-8302-832ae8c66850" basePath="${papi.http.path}" >
+		<http:request-connection host="${papi.http.host}" port="${papi.http.port}" />
+	</http:request-config>
+	<http:request-config name="Catalogue_Request_configuration" doc:name="HTTP Request configuration" doc:id="e59469f5-3617-4b92-9230-b68635269ae2" basePath="${catalogue.http.path}" >
+		<http:request-connection host="${catalogue.http.host}" port="${catalogue.http.port}" />
+	</http:request-config>
+	<http:request-config name="Seat_Request_configuration" doc:name="HTTP Request configuration" doc:id="dea23058-9f09-411f-9936-b81ea4d12fba" basePath="${seat.http.path}" >
+		<http:request-connection host="${seat.http.host}" port="${seat.http.port}" />
+	</http:request-config>
+	<http:request-config name="Elements_Request_configuration" doc:name="HTTP Request configuration" doc:id="921fa579-439f-4aa4-a444-c98276e0a34e" basePath="${elements.http.path}" >
+		<http:request-connection host="${elements.http.host}" port="${elements.http.port}" />
+	</http:request-config>
+	<http:request-config name="Pricing_Request_configuration" doc:name="HTTP Request configuration" doc:id="e127d9ae-abc3-46ea-ae39-62ae985244d8" basePath="${pricing.http.path}" >
+		<http:request-connection host="${pricing.http.host}" port="${pricing.http.port}" />
+	</http:request-config>
+	<http:request-config name="TSM_Request_configuration" doc:name="HTTP Request configuration" doc:id="43f74fdc-9766-4eb5-8621-c3f8233172d5" basePath="${tsm.http.path}" >
+		<http:request-connection host="${tsm.http.host}" port="${tsm.http.port}" />
+	</http:request-config>
+	<http:request-config name="EMD_Request_configuration" doc:name="HTTP Request configuration" doc:id="443461ad-955a-4a73-a80b-21b3bc0d3aed" basePath="${emd.http.path}" >
+		<http:request-connection host="${emd.http.host}" port="${emd.http.port}" />
+	</http:request-config>
+	<!-- テストコメント -->
+</mule>

@@ -1,0 +1,30 @@
+{
+	"domain": "dev-ctc-aswbe-sample-eapi-1-0-0",
+	"muleVersion": {
+		"version": "4.4.0"
+	},
+	"region": "ap-northeast-1",
+	"workers": {
+		"amount": 1,
+		"type": {
+			"name": "MICRO"
+		}
+	},
+
+	"autoStart": false,
+
+	"properties": {
+		"anypoint.platform.config.analytics.agent.enabled": false,
+		"log4j.cw.log.group": "dev-cloudhub-cw",
+		"log4j.cw.log.stream": "ctc-aswbe-sample2-eapi-v1-0-0",
+		"log4j.cw.aws.access.key": "#log4j.cw.aws.access.key#",
+		"log4j.cw.aws.secret.key": "#log4j.cw.aws.secret.key#",
+		"anypoint.platform.client_id": "#anypoint.platform.client_id#",
+		"anypoint.platform.client_secret": "#anypoint.platform.client_secret#",
+		"space.common_secret": "#space.common_secret#"
+	},
+	"monitoringAutoRestart": false,
+	"persistentQueues": false,
+	"loggingCustomLog4JEnabled": false,
+	"staticIPsEnabled": false
+}

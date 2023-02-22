@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="postProcessUserInfo-Flow" doc:id="e472a532-7e69-443c-9f57-879b14690b03" >
+		<set-variable value="#[payload]" doc:name="Set Variable" doc:id="0a24533a-a896-4259-9dce-bb66365d1c65" variableName="user_info"/>
+		<flow-ref doc:name="Get Catalog Information" doc:id="afaad3e7-b801-414f-aa88-5616df78c552" name="getCatalogInformation-Flow"/>
+		<flow-ref doc:name="Upgrade Destination Situation Check" doc:id="abcabb15-820a-47f5-a817-1b15b66bfddb" name="upgradeDestinationSituationCheck-Flow"/>
+		<flow-ref doc:name="Add Segments And Upgrade SSR" doc:id="d30c2081-f2ae-43fe-a861-ae9b4dbb65a2" name="addSegmentsAndUpgradeSSR-Flow"/>
+		<flow-ref doc:name="Register Upgrade Email Address" doc:id="c39aca0b-05f0-4e88-9a91-18bd26214b12" name="registerUpgradeEmailAddress-Flow"/>
+		<flow-ref doc:name="Added Refundable Ancillary Service Retention Identifier RMKS" doc:id="726667de-41b8-4d76-9a8a-cac2fda4d982" name="addMRKS-Flow"/>
+		<flow-ref doc:name="Add Handover SSR To Airport" doc:id="2a991997-6168-4614-94a4-fc32174af68b" name="addHandoverSSRtoAirport-Flow"/>
+		<flow-ref doc:name="Pricing" doc:id="cd7a6565-dec1-47f5-b987-01b1271db288" name="pricing-Flow"/>
+		<flow-ref doc:name="create TSM" doc:id="65694522-a3c0-4673-9a88-8bd0fb42ac41" name="createTSM-Flow"/>
+		<flow-ref doc:name="issue EMD" doc:id="79281e18-0692-4ded-b3a1-ebdf87be3112" name="issueEMD-Flow"/>
+		<set-payload value="#[output application/json&#10;---&#10;vars]" doc:name="Set Payload" doc:id="a3451915-874f-4fb9-9257-a79266cc1a78" />
+		<logger level="INFO" doc:name="Logger" doc:id="204fb98c-c32b-42f3-a29c-d36afdeb3273" message="#[%dw 2.0&#10;output application/json&#10;---&#10;vars]"/>
+	</flow>
+	<flow name="getCatalogInformation-Flow" doc:id="e50ba2dd-2cfc-4c82-8d17-761c12777e81" >
+		<http:request method="GET" doc:name="Request" doc:id="536fee2e-ac83-449c-9697-e9327eb14ce6" config-ref="Catalogue_Request_configuration" path="/catalogInformation">
+			<http:query-params ><![CDATA[#[output application/java
+---
+
+{
+	"user_id" : vars.user_info.UserId
+}]]]></http:query-params>
+		</http:request>
+		<set-variable value="#[payload]" doc:name="Set Variable" doc:id="1f524353-8230-4feb-a301-92e9bdd1b030" variableName="getCatalogInformationResult"/>
+	</flow>
+	<flow name="upgradeDestinationSituationCheck-Flow" doc:id="a7740645-1209-44b4-8384-547f934afbef" >
+		<ee:transform doc:name="Transform Message" doc:id="698a02c1-b27a-4220-b4a7-7a0bb8d96f3e" >
+			<ee:message >
+				<ee:set-payload resource="modules/p-upgradeDestinationSituation.dwl" />
+			</ee:message>
+		</ee:transform>
+		<http:request method="POST" doc:name="Request" doc:id="c2d01a9e-282a-4f02-9d16-aba796866c22" config-ref="Seat_Request_configuration" path="/upgradeDestinationSituation"/>
+		<set-variable value="#[payload]" doc:name="Set Variable" doc:id="8d24d15f-3f8e-497b-b3a2-17ba1ed9e48a" variableName="upgradeCheckResult"/>
+	</flow>
+	<flow name="addSegmentsAndUpgradeSSR-Flow" doc:id="7e489578-cdb2-4a3d-ad18-fb41831ca994" >
+		<ee:transform doc:name="Transform Message" doc:id="c54df1a8-50d0-462a-93f4-9aa3a56f014e" >
+			<ee:message >
+				<ee:set-payload resource="modules/p-segmentsAndUpgradeSSR.dwl" />
+			</ee:message>
+		</ee:transform>
+		<http:request method="PUT" doc:name="Request" doc:id="08930424-d009-4aa2-a9cc-c91955f26d32" config-ref="Elements_Request_configuration" path="/segmentsAndUpgradeSSR"/>
+		<set-variable value="#[payload]" doc:name="Set Variable" doc:id="b2a8e48f-9ff0-41c7-9623-ba444342e0ac" variableName="addSegmentsAndUpgradeSSRResult"/>
+	</flow>
+	<flow name="registerUpgradeEmailAddress-Flow" doc:id="25b04e75-12fd-471a-a40f-cddec10adaa7" >
+		<ee:transform doc:name="Transform Message" doc:id="a2ddb537-1ad5-4bf0-8839-15f0b4e8802e" >
+			<ee:message >
+				<ee:set-payload resource="modules/p-upgradeEmailAddress.dwl" />
+			</ee:message>
+		</ee:transform>
+		<http:request method="PUT" doc:name="Request" doc:id="9bf49c1f-d08e-4a5d-925c-f7984e7e5b78" config-ref="Elements_Request_configuration" path="/upgradeEmailAddress"/>
+		<set-variable value="#[payload]" doc:name="Set Variable" doc:id="634ba530-22a8-460f-8972-548afc3a4123" variableName="registerUpgradeEmailAddressResult"/>
+	</flow>
+	<flow name="addMRKS-Flow" doc:id="bfe555c0-2b7a-4e02-bc17-a9de0ba178a4" >
+		<ee:transform doc:name="Transform Message" doc:id="4d013bef-5c53-478a-82b2-5e30ab3566d0" >
+			<ee:message >
+				<ee:set-payload resource="modules/p-MRKS.dwl" />
+			</ee:message>
+		</ee:transform>
+		<http:request method="PUT" doc:name="Request" doc:id="ea9b705b-a63e-466c-af47-e4fb12bc1b51" path="/RMKS" config-ref="Elements_Request_configuration"/>
+		<set-variable value="#[payload]" doc:name="Set Variable" doc:id="c9c9965e-9715-4c69-8a00-12a25215e8f9" variableName="addMRKSResult"/>
+	</flow>
+	<flow name="addHandoverSSRtoAirport-Flow" doc:id="809118db-aa03-4f11-9dc5-987ab0894f40">
+		<ee:transform doc:name="Transform Message" doc:id="ed4cf2e9-a6c5-4db8-a61d-7e8bb0bbf474">
+			<ee:message>
+				<ee:set-payload resource="modules/p-handoverSSRtoAirport.dwl" />
+			</ee:message>
+		</ee:transform>
+		<http:request method="PUT" doc:name="Request" doc:id="6d97bd34-83a3-456c-911a-3d269852aeb5" config-ref="Elements_Request_configuration" path="/handoverSSRtoAirport" />
+		<set-variable value="#[payload]" doc:name="Set Variable" doc:id="a2f24b05-e19d-4916-8d0e-8f48e7c6f733" variableName="addHandoverSSRtoAirportResult" />
+	</flow>
+	<flow name="pricing-Flow" doc:id="018086cf-7bd4-42cd-b3c5-13d76dcf09b9">
+		<ee:transform doc:name="Transform Message" doc:id="1c77b533-dc66-4486-a0a9-cc2fbbb9e1de">
+			<ee:message>
+				<ee:set-payload resource="modules/p-pricing.dwl" />
+			</ee:message>
+		</ee:transform>
+		<http:request method="POST" doc:name="Request" doc:id="e1920eb6-101f-40f3-af0a-dfeef7f21938" config-ref="Pricing_Request_configuration" path="/pricing" />
+		<set-variable value="#[payload]" doc:name="Set Variable" doc:id="6e17f4dd-32d0-4501-b668-e6261a0e4b89" variableName="pricingResult" />
+	</flow>
+	<flow name="createTSM-Flow" doc:id="4f2c6a1e-7c5f-43a1-bf61-a2431960d5ec">
+		<ee:transform doc:name="Transform Message" doc:id="5b125b61-e732-49fc-ab2b-ae0c789b8367">
+			<ee:message>
+				<ee:set-payload resource="modules/p-TSM.dwl" />
+			</ee:message>
+		</ee:transform>
+		<http:request method="PUT" doc:name="Request" doc:id="8452717b-9fbd-410c-8ac8-be807daab28a" config-ref="TSM_Request_configuration" path="/TSM" />
+		<set-variable value="#[payload]" doc:name="Set Variable" doc:id="5832d9a2-65f7-429f-ae82-5862c74971b6" variableName="createTSMResult" />
+	</flow>
+	<flow name="issueEMD-Flow" doc:id="a07dd595-c97f-4c11-b3a6-0c04fa2728fc">
+		<ee:transform doc:name="Transform Message" doc:id="729d5f87-ddb1-4d69-9e69-af8f3cd46ff4">
+			<ee:message>
+				<ee:set-payload resource="modules/p-EMD.dwl" />
+			</ee:message>
+		</ee:transform>
+		<http:request method="PUT" doc:name="Request" doc:id="d01b02f7-21e1-4680-a777-99541f6713f6" config-ref="EMD_Request_configuration" path="/EMD" />
+		<set-variable value="#[payload]" doc:name="Set Variable" doc:id="1f006b44-31d3-4d61-863c-563a462629ae" variableName="issueEMDResult" />
+	</flow>
+</mule>

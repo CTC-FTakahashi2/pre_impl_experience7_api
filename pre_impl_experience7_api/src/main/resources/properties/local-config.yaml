@@ -1,0 +1,44 @@
+http:
+  host: "0.0.0.0"
+  theport: "8081"
+  path: "/api"
+dxapi:
+  http:
+    host: "0.0.0.0"
+    port: "8083"
+    path: "/api"
+papi:
+  http:
+    host: "0.0.0.0"
+    port: "8082"
+    path: "/api"
+catalogue:
+  http:
+    host: "0.0.0.0"
+    port: "8091"
+    path: "/api"
+seat:
+  http:
+    host: "0.0.0.0"
+    port: "8092"
+    path: "/api"
+elements:
+  http:
+    host: "0.0.0.0"
+    port: "8093"
+    path: "/api"
+pricing:
+  http:
+    host: "0.0.0.0"
+    port: "8094"
+    path: "/api"
+tsm:
+  http:
+    host: "0.0.0.0"
+    port: "8095"
+    path: "/api"
+emd:
+  http:
+    host: "0.0.0.0"
+    port: "8096"
+    path: "/api"

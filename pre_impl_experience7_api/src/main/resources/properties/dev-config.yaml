@@ -1,0 +1,44 @@
+http:
+  host: "0.0.0.0"
+  theport: "8091"
+  path: "/api"
+dxapi:
+  http:
+    host: "internal-dev-asw-api-int-dlb1.intspace.ana.co.jp"
+    port: "80"
+    path: "/ctc-aswbe-sample-dxapi/sys/api/1-0-0"
+papi:
+  http:
+    host: "internal-dev-asw-api-int-dlb1.intspace.ana.co.jp"
+    port: "80"
+    path: "/ctc-aswbe-sample/proc/api/1-0-0"
+catalogue:
+  http:
+    host: "internal-dev-asw-api-int-dlb1.intspace.ana.co.jp"
+    port: "80"
+    path: "/ctc-aswbe-sample-catalogue/sys/api/1-0-0/mock"
+seat:
+  http:
+    host: "internal-dev-asw-api-int-dlb1.intspace.ana.co.jp"
+    port: "80"
+    path: "/ctc-aswbe-sample-seat/sys/api/1-0-0/mock"
+elements:
+  http:
+    host: "internal-dev-asw-api-int-dlb1.intspace.ana.co.jp"
+    port: "80"
+    path: "/ctc-aswbe-sample-elements/sys/api/1-0-0/mock"
+pricing:
+  http:
+    host: "internal-dev-asw-api-int-dlb1.intspace.ana.co.jp"
+    port: "80"
+    path: "/ctc-aswbe-sample-pricing/sys/api/1-0-0/mock"
+tsm:
+  http:
+    host: "internal-dev-asw-api-int-dlb1.intspace.ana.co.jp"
+    port: "80"
+    path: "/ctc-aswbe-sample-tsm/sys/api/1-0-0/mock"
+emd:
+  http:
+    host: "internal-dev-asw-api-int-dlb1.intspace.ana.co.jp"
+    port: "80"
+    path: "/ctc-aswbe-sample-emd/sys/api/1-0-0/mock"

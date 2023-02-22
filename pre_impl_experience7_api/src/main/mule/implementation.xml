@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="getSampleApi-HavePapi-Flow" doc:id="7f3bc22c-111e-44c0-919f-d2ffa103ad3e" >
+		<flow-ref doc:name="authenticate" doc:id="ac4632e9-3e51-4490-9c77-f38ef62dc5a5" name="authenticate-Flow"/>
+		<flow-ref doc:name="preProcess" doc:id="64772610-816e-4f24-89c3-d8c98761fae0" name="preProcess-Flow"/>
+		<flow-ref doc:name="getStatus" doc:id="ebbda15d-3504-46b9-a8ea-26bec5acc79c" name="getStatus-Flow"/>
+		<flow-ref doc:name="mainProcessByPapi" doc:id="b881dac2-4df4-4bfb-a447-66d5fb2d8bf2" name="getSample-Flow"/>
+		<flow-ref doc:name="postProcess" doc:id="87e6ba9c-fde9-4d1c-a33b-4b8ec3fd0149" name="postProcess-Flow"/>
+		<logger level="INFO" doc:name="Logger" doc:id="b5ee21b8-9ea0-4c60-8354-0b62fb03d0e3" />
+		<error-handler>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="a2360e1d-3231-4556-be23-9a257bbf0f11" type="VALIDATION:BLANK_STRING">
+				<ee:transform doc:name="Transform Message" doc:id="f7eec075-a251-4fa5-ac85-2283cf542bf5" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	ErrorMessage: error.description
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<flow name="getSampleApi-NoPapi-Flow" doc:id="36916f75-aed1-49fc-b703-a8cd7e747262">
+		<flow-ref doc:name="authenticate" doc:id="06ea3808-d77d-49bc-8d83-5d9b609d47bb" name="authenticate-Flow" />
+		<flow-ref doc:name="preProcess" doc:id="693ebd3b-5b8b-4c08-be02-d20e3976350d" name="preProcess-Flow" />
+		<flow-ref doc:name="getStatus" doc:id="2feb7a7f-b3bc-430a-986e-193aed1bd6f0" name="getStatus-Flow" />
+		<flow-ref doc:name="mainProcessInEapi" doc:id="4b9dfeed-af8b-42a5-adfe-d953669ad885" name="postProcessUserInfo-Flow" />
+		<flow-ref doc:name="postProcess" doc:id="3e11d2d3-8f69-4c85-8ee3-34d861a5b8e7" name="postProcess-Flow" />
+		<logger level="INFO" doc:name="Logger" doc:id="93e5c90f-29f4-4397-a22b-8c68f027c7fa" />
+		<error-handler>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="7a9cf399-61b9-4fe8-ace2-ea45f10dc952" type="VALIDATION:BLANK_STRING">
+				<ee:transform doc:name="Transform Message" doc:id="91be0d0b-52bb-4d6a-8131-40ddc8f31c3d">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	ErrorMessage: error.description
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<flow name="authenticate-Flow" doc:id="2db26935-d84d-4286-a184-e2fe95ea46f6" >
+		<validation:is-not-blank-string doc:name="Is not blank string" doc:id="fd7e89a4-16c6-4cb6-93be-ba72a0e37c6d" value="#[message.attributes.queryParams.user_id]" message='Authenticate Failed.'/>
+	</flow>
+	<flow name="preProcess-Flow" doc:id="bf796314-fc3a-41fc-9b7d-d17740134564" >
+		<http:request method="GET" doc:name="RequestSystemApi" doc:id="238ae1a5-bd3a-4c89-93bd-0e4235f278e9" config-ref="SApi_HTTP_Request_configuration" path="/user_info">
+			<http:query-params ><![CDATA[#[output application/json
+---
+{
+	"user_id" : message.attributes.queryParams.user_id default "987654"
+}]]]></http:query-params>
+		</http:request>
+	</flow>
+	<flow name="getStatus-Flow" doc:id="c79b1a22-f6de-4e9d-9b0a-b2be90252a9a" >
+		<set-variable value='1' doc:name="Set Variable" doc:id="18ad1cb8-c4ac-49a7-ab48-f8fe610f182c" variableName="status"/>
+	</flow>
+	<flow name="getSample-Flow" doc:id="b5c6f317-b7b1-46fc-8ee7-c9ebeb1450c3" >
+		<http:request method="POST" doc:name="RequestProcessApi" doc:id="deb4309e-bad4-493f-ae40-a5f452b03b7e" config-ref="PApi_HTTP_Request_configuration" path="/process_user_info"/>
+	</flow>
+	<flow name="postProcess-Flow" doc:id="c67a3db8-234b-4e08-923a-3960b513828d" >
+		<set-variable value='post_process finished.' doc:name="Set Variable" doc:id="bbb3b636-d999-489e-9412-1e52bc620b0f" variableName="post_process"/>
+	</flow>
+</mule>

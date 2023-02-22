@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="get:\have_papi\sample_api" doc:id="b74618b1-b476-4c53-93d9-8632e8ffeaf5" >
+		<http:listener doc:name="Listener" doc:id="83d7a1e9-7ba0-4664-842e-5494d0e4afb0" config-ref="HTTP_Listener_config" path="/have_papi/sample_api" allowedMethods="GET">
+			<http:error-response >
+				<http:body ><![CDATA[#[payload]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<flow-ref doc:name="getSampleApi" doc:id="402d03d3-b5f7-47b4-a32f-6fe870a4f530" name="getSampleApi-HavePapi-Flow"/>
+	</flow>
+	<flow name="get:\no_papi\sample_api" doc:id="af591128-9738-4f6a-b445-3a5d7f63b92a" >
+		<http:listener doc:name="Listener" doc:id="8af57794-c6d3-43d7-b20c-83016c036774" config-ref="HTTP_Listener_config" path="/no_papi/sample_api"/>
+		<flow-ref doc:name="Flow Reference" doc:id="cb17d8ae-96e7-487d-b88b-cdddf61347be" name="getSampleApi-NoPapi-Flow"/>
+	</flow>
+	<flow name="get:\test_api" doc:id="c24bfaa0-5fe2-4967-b8b1-b13e1c230063" >
+		<http:listener doc:name="Listener" doc:id="9c960693-8127-4683-8dc7-d91f8f2dac6c" config-ref="HTTP_Listener_config" path="/test_api"/>
+		<set-payload value="Access ctc-aswbe-sample-eapi successfully." doc:name="Set Payload" doc:id="cee5b0f2-3861-4798-bca2-cf465f771921" />
+	</flow>
+</mule>
