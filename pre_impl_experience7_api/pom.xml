@@ -3,11 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mycompany</groupId>
-	<artifactId>pre_impl_experience6_api</artifactId>
+	<artifactId>pre_impl_experience7_api</artifactId>
 	<version>1.0.1</version>
+	<classifier>mule-application</classifier>
 	<packaging>mule-application</packaging>
 
-	<name>pre_impl_experience6_api</name>
+	<name>pre_impl_experience7_api</name>
 
 	<!-- テスト用 -->
 	<properties>
