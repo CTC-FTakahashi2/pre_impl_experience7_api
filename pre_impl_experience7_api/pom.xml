@@ -4,7 +4,7 @@
 
 	<groupId>com.mycompany</groupId>
 	<artifactId>pre_impl_experience7_api</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.0</version>
 	<classifier>mule-application</classifier>
 	<packaging>mule-application</packaging>
 
