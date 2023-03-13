@@ -34,4 +34,6 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<http:request-connection host="${emd.http.host}" port="${emd.http.port}" />
 	</http:request-config>
 	<!-- テストコメント -->
+		<!-- テストコメント -->
+			<!-- テストコメント -->
 </mule>
