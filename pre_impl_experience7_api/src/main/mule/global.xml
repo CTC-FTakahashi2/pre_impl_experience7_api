@@ -33,7 +33,4 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	<http:request-config name="EMD_Request_configuration" doc:name="HTTP Request configuration" doc:id="443461ad-955a-4a73-a80b-21b3bc0d3aed" basePath="${emd.http.path}" >
 		<http:request-connection host="${emd.http.host}" port="${emd.http.port}" />
 	</http:request-config>
-	<!-- テストコメント -->
-		<!-- テストコメント -->
-			<!-- テストコメント -->
 </mule>
