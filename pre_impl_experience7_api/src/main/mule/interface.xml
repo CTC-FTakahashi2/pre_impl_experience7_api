@@ -20,4 +20,5 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<http:listener doc:name="Listener" doc:id="9c960693-8127-4683-8dc7-d91f8f2dac6c" config-ref="HTTP_Listener_config" path="/test_api"/>
 		<set-payload value="Access ctc-aswbe-sample-eapi successfully." doc:name="Set Payload" doc:id="cee5b0f2-3861-4798-bca2-cf465f771921" />
 	</flow>
+	<!-- コメント -->
 </mule>
